@@ -10,14 +10,16 @@ import UIKit
 class WindowSceneryView: UIView {
     enum WindowType {
         case ring
-        case verticalBar
+        case verticalBar(isSelected: Bool)
         
         func getMask() -> MaskProgressable {
             switch self {
             case .ring:
                 return RingShape()
-            case .verticalBar:
-                return VerticalBarView()
+            case .verticalBar(let isSelected):
+                let shape = VerticalBarView()
+                shape.isSelected = isSelected
+                return shape
             }
         }
     }

@@ -8,35 +8,15 @@
 import Foundation
 import UIKit
 
-protocol MaskProgressable: UIView {
-    var progress: CGFloat {get set}
-    var lineWidth: CGFloat {get set}
-}
-
-enum AnimateStep {
-    case setup
-    case preStart
-    case wait
-    case start
-    case end
-}
-
 class VerticalBarView: UIView, MaskProgressable {
-    var lineWidth: CGFloat = 14
-    
-    // MARK:  Public
-    var progress: CGFloat = 0 {
+    var isSelected: Bool = true {
         didSet {
-            if progress < 0 {
-                progress = 0
-            } else if progress > 1 {
-                progress = 1
-            } else {}
-            
-            (layer as! CAShapeLayer).strokeEnd = progress
+            if isSelected == false, let count = layer.sublayers?.count, count > 0, let selectLayer = layer.sublayers?[0] as? CAShapeLayer {
+                selectLayer.removeFromSuperlayer()
+            }
         }
     }
-
+    
     // MARK:  Life Cycle
     override class var layerClass: AnyClass {
         return CAShapeLayer.self
@@ -54,7 +34,7 @@ class VerticalBarView: UIView, MaskProgressable {
         
         let shapeLayer = CAShapeLayer()
         shapeLayer.lineWidth = 1.0
-        shapeLayer.path = path2().cgPath
+        shapeLayer.path = selectedPath().cgPath
         self.layer.addSublayer(shapeLayer)
     }
     
@@ -66,9 +46,26 @@ class VerticalBarView: UIView, MaskProgressable {
         super.layoutSubviews()
         
         (layer as! CAShapeLayer).path = path().cgPath
-        (layer.sublayers?[0] as! CAShapeLayer).path = path2().cgPath
+        if let count = layer.sublayers?.count, count > 0, let selectLayer = layer.sublayers?[0] as? CAShapeLayer {
+            selectLayer.path = selectedPath().cgPath
+        }
     }
     
+    // MARK: MaskProgressable
+    var lineWidth: CGFloat = 14
+    var progress: CGFloat = 0 {
+        didSet {
+            if progress < 0 {
+                progress = 0
+            } else if progress > 1 {
+                progress = 1
+            } else {}
+            
+            (layer as! CAShapeLayer).strokeEnd = progress
+        }
+    }
+    
+    // MARK: AnimateTik
     var progressTarget: CGFloat = 0.2
     var duration: Double = 10
     var tikProgress: CGFloat = 0
@@ -88,21 +85,12 @@ extension VerticalBarView {
         return path
     }
     
-    private func path2() -> UIBezierPath {
+    private func selectedPath() -> UIBezierPath {
         let xPoint = center.x
         let yPoint = bounds.maxY - 6
         let todayPath = UIBezierPath(arcCenter: CGPoint(x: xPoint, y: yPoint), radius: 2, startAngle: 0, endAngle: 2 * .pi , clockwise: false)
         return todayPath
     }
-}
-
-protocol AnimateTik: AnyObject {
-    var progressTarget: CGFloat {get set}
-    var duration: Double {get set}
-    var tikProgress : CGFloat {get set}
-    var animateStatus: AnimateStep {get set}
-    
-    var endAnimate: (()->Void) { get set }
 }
 
 extension VerticalBarView: AnimateTik {

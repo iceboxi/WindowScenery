@@ -9,21 +9,6 @@ import Foundation
 import UIKit
 
 class RingShape: UIView, MaskProgressable {
-    var lineWidth: CGFloat = 5.0
-    
-    // MARK:  Public
-    var progress: CGFloat = 0 {
-        didSet {
-            if progress < 0 {
-                progress = 0
-            } else if progress > 1 {
-                progress = 1
-            } else {}
-            
-            (layer as! CAShapeLayer).strokeEnd = progress
-        }
-    }
-
     // MARK:  Life Cycle
     override class var layerClass: AnyClass {
         return CAShapeLayer.self
@@ -48,6 +33,20 @@ class RingShape: UIView, MaskProgressable {
         super.layoutSubviews()
         
         (layer as! CAShapeLayer).path = path().cgPath
+    }
+    
+    // MARK: MaskProgressable
+    var lineWidth: CGFloat = 5
+    var progress: CGFloat = 0 {
+        didSet {
+            if progress < 0 {
+                progress = 0
+            } else if progress > 1 {
+                progress = 1
+            } else {}
+            
+            (layer as! CAShapeLayer).strokeEnd = progress
+        }
     }
     
     // MARK: AnimateTik
