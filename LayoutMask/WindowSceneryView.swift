@@ -17,7 +17,7 @@ class WindowSceneryView: UIView {
             case .ring:
                 return RingShape()
             case .verticalBar(let isSelected):
-                let shape = VerticalBarView()
+                let shape = VerticalBarShape()
                 shape.isSelected = isSelected
                 return shape
             }

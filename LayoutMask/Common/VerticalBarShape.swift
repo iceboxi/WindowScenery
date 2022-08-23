@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class VerticalBarView: UIView, MaskProgressable {
+class VerticalBarShape: UIView, MaskProgressable {
     var isSelected: Bool = true {
         didSet {
             if isSelected == false, let count = layer.sublayers?.count, count > 0, let selectLayer = layer.sublayers?[0] as? CAShapeLayer {
@@ -73,7 +73,7 @@ class VerticalBarView: UIView, MaskProgressable {
     var animateStatus: AnimateStep = .setup
 }
 
-extension VerticalBarView {
+extension VerticalBarShape {
     private func path() -> UIBezierPath {
         let path = UIBezierPath()
         
@@ -93,7 +93,7 @@ extension VerticalBarView {
     }
 }
 
-extension VerticalBarView: AnimateTik {
+extension VerticalBarShape: AnimateTik {
     @objc func onTik() {
         switch animateStatus {
         case .setup:
