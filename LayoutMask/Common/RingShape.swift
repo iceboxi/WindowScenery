@@ -19,8 +19,8 @@ class RingShape: UIView, MaskProgressable {
         let layer = (self.layer as! CAShapeLayer)
         layer.fillColor = nil
         layer.strokeColor = UIColor.white.cgColor
-        layer.lineWidth = lineWidth
-        layer.path = path().cgPath
+//        layer.lineWidth = lineWidth
+//        layer.path = path(bounds, lineWidth: lineWidth).cgPath
         layer.strokeEnd = 0
         layer.lineCap = .round
     }
@@ -32,11 +32,15 @@ class RingShape: UIView, MaskProgressable {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        (layer as! CAShapeLayer).path = path().cgPath
+        (layer as! CAShapeLayer).path = path(bounds, lineWidth: lineWidth).cgPath
     }
     
     // MARK: MaskProgressable
-    var lineWidth: CGFloat = 5
+    var lineWidth: CGFloat = 5 {
+        didSet {
+            (layer as! CAShapeLayer).lineWidth = lineWidth
+        }
+    }
     var progress: CGFloat = 0 {
         didSet {
             if progress < 0 {
@@ -58,9 +62,14 @@ class RingShape: UIView, MaskProgressable {
 }
 
 extension RingShape {
-    private func path() -> UIBezierPath {
+    func path(_ bounds: CGRect, lineWidth: CGFloat) -> UIBezierPath {
         let radius = floor(min((bounds.width - lineWidth) / 2, (bounds.height - lineWidth) / 2))
-        let path = UIBezierPath(arcCenter: CGPoint(x: bounds.midX, y: bounds.midY), radius: radius, startAngle: -CGFloat(Float.pi / 2), endAngle: CGFloat(Float.pi / 2) * 3.0, clockwise: true)
+        
+        let start = 83.0
+        let startAngle = -(start * .pi / 180)
+        let endAngle = 2 * .pi + startAngle
+        
+        let path = UIBezierPath(arcCenter: CGPoint(x: bounds.midX, y: bounds.midY), radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
         return path
     }
 }

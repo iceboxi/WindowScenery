@@ -13,19 +13,26 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        
-        let window = WindowSceneryView(frame: CGRect(x: 20, y: 70, width: 200, height: 200))
-        window.tag = 1
-        window.type = .verticalBar(isSelected: true)
-        window.progress = 0.6
-        view.addSubview(window)
+        let width = 50.0
+        for i in 0...5 {
+            let window = WindowSceneryView(frame: CGRect(x: 20 + width * Double(i), y: 70, width: width, height: 200))
+            window.tag = i + 1
+//            window.lineWidth = 14
+            window.type = .verticalBar(isSelected: true)
+//            window.sceneryView.image = UIImage(named: "color")
+//            window.type = .ring
+            window.progress = 0.5
+            view.addSubview(window)
+        }
         
         view.backgroundColor = .yellow
     }
     
     @IBAction func animate(_ sender: Any) {
-        if let window = view.viewWithTag(1) as? WindowSceneryView {
-            window.startAnimation()
+        for i in 0...5 {
+            if let window = view.viewWithTag(i + 1) as? WindowSceneryView {
+                window.startAnimation()
+            }
         }
     }
 }

@@ -11,6 +11,8 @@ import UIKit
 protocol MaskProgressable: UIView {
     var progress: CGFloat {get set}
     var lineWidth: CGFloat {get set}
+    
+    func path(_ bounds: CGRect, lineWidth: CGFloat) -> UIBezierPath
 }
 
 enum AnimateStep {

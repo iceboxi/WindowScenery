@@ -15,7 +15,8 @@ class WindowSceneryView: UIView {
         func getMask() -> MaskProgressable {
             switch self {
             case .ring:
-                return RingShape()
+                let shape = RingShape()
+                return shape
             case .verticalBar(let isSelected):
                 let shape = VerticalBarShape()
                 shape.isSelected = isSelected
@@ -25,10 +26,10 @@ class WindowSceneryView: UIView {
     }
     
     // 景（图片）
-    private lazy var sceneryView: UIImageView = {
+    var sceneryView: UIImageView = {
         let view = UIImageView()
         view.image = UIImage(named: "img_usage_level_gradient")
-        
+        view.contentMode = .scaleAspectFill
         return view
     }()
     
@@ -41,9 +42,12 @@ class WindowSceneryView: UIView {
     }
     private var displayLink: CADisplayLink?
     
+    var showNotch = true
+    var lineWidth: CGFloat = 14.0
     var type: WindowType = .ring {
         didSet {
             let customMask = type.getMask()
+            customMask.lineWidth = lineWidth
             customMask.frame = bounds
             customMask.center = CGPoint(x: sceneryView.bounds.midX, y: sceneryView.bounds.midY)
             customMask.progress = progress
@@ -54,16 +58,25 @@ class WindowSceneryView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-//        self.backgroundColor = .purple
+//        let customMask = type.getMask()
+        
+        let backLayer = CAShapeLayer()
+        backLayer.fillColor = nil
+        backLayer.strokeColor = UIColor.gray.cgColor
+//        backLayer.lineWidth = lineWidth
+//        backLayer.path = customMask.path(bounds).cgPath
+        backLayer.strokeEnd = 1
+        backLayer.lineCap = .round
+        self.layer.addSublayer(backLayer)
         
         sceneryView.frame = bounds
         self.addSubview(sceneryView)
         
-        let customMask = type.getMask()
-        customMask.frame = bounds
-        customMask.center = CGPoint(x: sceneryView.bounds.midX, y: sceneryView.bounds.midY)
-        customMask.progress = progress
-        sceneryView.mask = customMask
+//        customMask.lineWidth = lineWidth
+//        customMask.frame = bounds
+//        customMask.center = CGPoint(x: sceneryView.bounds.midX, y: sceneryView.bounds.midY)
+//        customMask.progress = progress
+//        sceneryView.mask = customMask
         
 //        let gradientLayer = CAGradientLayer()
 //        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.5)
@@ -84,6 +97,15 @@ class WindowSceneryView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        if showNotch, let count = layer.sublayers?.count, count > 0, let backLayer = layer.sublayers?[0] as? CAShapeLayer {
+            backLayer.lineWidth = lineWidth
+            backLayer.path = type.getMask().path(bounds, lineWidth: lineWidth).cgPath
+        }
     }
 }
 

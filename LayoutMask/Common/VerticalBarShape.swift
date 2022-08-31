@@ -24,11 +24,12 @@ class VerticalBarShape: UIView, MaskProgressable {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         let layer = (self.layer as! CAShapeLayer)
         layer.fillColor = nil
         layer.strokeColor = UIColor.white.cgColor
-        layer.lineWidth = lineWidth
-        layer.path = path().cgPath
+//        layer.lineWidth = lineWidth
+//        layer.path = path(bounds, lineWidth: lineWidth).cgPath
         layer.strokeEnd = 0
         layer.lineCap = .round
         
@@ -45,14 +46,18 @@ class VerticalBarShape: UIView, MaskProgressable {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        (layer as! CAShapeLayer).path = path().cgPath
+        (layer as! CAShapeLayer).path = path(bounds, lineWidth: lineWidth).cgPath
         if let count = layer.sublayers?.count, count > 0, let selectLayer = layer.sublayers?[0] as? CAShapeLayer {
             selectLayer.path = selectedPath().cgPath
         }
     }
     
     // MARK: MaskProgressable
-    var lineWidth: CGFloat = 14
+    var lineWidth: CGFloat = 14 {
+        didSet {
+            (layer as! CAShapeLayer).lineWidth = lineWidth
+        }
+    }
     var progress: CGFloat = 0 {
         didSet {
             if progress < 0 {
@@ -74,22 +79,22 @@ class VerticalBarShape: UIView, MaskProgressable {
 }
 
 extension VerticalBarShape {
-    private func path() -> UIBezierPath {
-        let path = UIBezierPath()
-        
-        let xPoint = center.x
-        
-        path.move(to: CGPoint(x: xPoint, y: bounds.maxY - 6 - 4 - lineWidth / 2 - 2))
-        path.addLine(to: CGPoint(x: xPoint, y: 6 + lineWidth / 2))
-        
-        return path
-    }
-    
     private func selectedPath() -> UIBezierPath {
         let xPoint = center.x
         let yPoint = bounds.maxY - 6
         let todayPath = UIBezierPath(arcCenter: CGPoint(x: xPoint, y: yPoint), radius: 2, startAngle: 0, endAngle: 2 * .pi , clockwise: false)
         return todayPath
+    }
+    
+    func path(_ bounds: CGRect, lineWidth: CGFloat) -> UIBezierPath {
+        let path = UIBezierPath()
+        
+        let xPoint = bounds.midX
+        
+        path.move(to: CGPoint(x: xPoint, y: bounds.maxY - 6 - 4 - lineWidth / 2 - 2))
+        path.addLine(to: CGPoint(x: xPoint, y: 6 + lineWidth / 2))
+        
+        return path
     }
 }
 
