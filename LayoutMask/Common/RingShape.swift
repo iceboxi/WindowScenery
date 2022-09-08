@@ -19,8 +19,6 @@ class RingShape: UIView, MaskProgressable {
         let layer = (self.layer as! CAShapeLayer)
         layer.fillColor = nil
         layer.strokeColor = UIColor.white.cgColor
-//        layer.lineWidth = lineWidth
-//        layer.path = path(bounds, lineWidth: lineWidth).cgPath
         layer.strokeEnd = 0
         layer.lineCap = .round
     }
@@ -82,16 +80,11 @@ extension RingShape: AnimateTik {
             progress = tikProgress
             animateStatus = .preStart
         case .preStart:
-            let tik = 1.0 / 60 / 1
+            animateStatus = .wait
+        case .wait:
+            let tik = 1.0 / 60 / 1.3
             tikProgress += tik
             if tikProgress > 1 {
-                tikProgress = 1
-                animateStatus = .wait
-            }
-        case .wait:
-            let tik = 1.0 / 60 / 2
-            tikProgress += tik
-            if tikProgress > (1 + tik * 60 * 2) {
                 tikProgress = 0
                 animateStatus = .start
             }
@@ -104,6 +97,7 @@ extension RingShape: AnimateTik {
             }
             progress = tikProgress
         case .end:
+            progress = progressTarget
             endAnimate()
         }
     }

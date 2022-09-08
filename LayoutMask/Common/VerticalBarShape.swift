@@ -24,12 +24,18 @@ class VerticalBarShape: UIView, MaskProgressable {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        setup()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setup()
+    }
+    
+    func setup() {
         let layer = (self.layer as! CAShapeLayer)
         layer.fillColor = nil
         layer.strokeColor = UIColor.white.cgColor
-//        layer.lineWidth = lineWidth
-//        layer.path = path(bounds, lineWidth: lineWidth).cgPath
         layer.strokeEnd = 0
         layer.lineCap = .round
         
@@ -37,10 +43,6 @@ class VerticalBarShape: UIView, MaskProgressable {
         shapeLayer.lineWidth = 1.0
         shapeLayer.path = selectedPath().cgPath
         self.layer.addSublayer(shapeLayer)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     override func layoutSubviews() {
@@ -76,13 +78,17 @@ class VerticalBarShape: UIView, MaskProgressable {
     var tikProgress: CGFloat = 0
     var endAnimate: (() -> Void) = {}
     var animateStatus: AnimateStep = .setup
+    
+    // MARK: Private
+    private let selectedPointRadius: CGFloat = 2
+    private let selectedSpace: CGFloat = 4
 }
 
 extension VerticalBarShape {
     private func selectedPath() -> UIBezierPath {
         let xPoint = center.x
-        let yPoint = bounds.maxY - 6
-        let todayPath = UIBezierPath(arcCenter: CGPoint(x: xPoint, y: yPoint), radius: 2, startAngle: 0, endAngle: 2 * .pi , clockwise: false)
+        let yPoint = bounds.maxY - selectedPointRadius
+        let todayPath = UIBezierPath(arcCenter: CGPoint(x: xPoint, y: yPoint), radius: selectedPointRadius, startAngle: 0, endAngle: 2 * .pi , clockwise: false)
         return todayPath
     }
     
@@ -90,9 +96,11 @@ extension VerticalBarShape {
         let path = UIBezierPath()
         
         let xPoint = bounds.midX
+        let selectedPointSpace: CGFloat = selectedPointRadius * 2
+        let lineCapRound: CGFloat = lineWidth / 2
         
-        path.move(to: CGPoint(x: xPoint, y: bounds.maxY - 6 - 4 - lineWidth / 2 - 2))
-        path.addLine(to: CGPoint(x: xPoint, y: 6 + lineWidth / 2))
+        path.move(to: CGPoint(x: xPoint, y: bounds.maxY - selectedPointSpace - selectedSpace - lineCapRound))
+        path.addLine(to: CGPoint(x: xPoint, y: lineWidth / 2))
         
         return path
     }
@@ -106,7 +114,7 @@ extension VerticalBarShape: AnimateTik {
             progress = tikProgress
             animateStatus = .preStart
         case .preStart:
-            let tik = 1.0 / 60 / 1
+            let tik = 1.0 / 60 / 0.8
             tikProgress += tik
             if tikProgress > 1 {
                 tikProgress = 1
@@ -114,14 +122,14 @@ extension VerticalBarShape: AnimateTik {
             }
             progress = tikProgress
         case .wait:
-            let tik = 1.0 / 60 / 2
+            let tik = 1.0 / 60 / 0.5
             tikProgress += tik
-            if tikProgress > (1 + tik * 60 * 2) {
+            if tikProgress > 2 {
                 tikProgress = 1
                 animateStatus = .start
             }
         case .start:
-            let tik = 1.0 / 60 / 1
+            let tik = 1.0 / 60 / 0.8
             tikProgress -= tik
             if tikProgress < progressTarget {
                 tikProgress = progressTarget
@@ -129,6 +137,7 @@ extension VerticalBarShape: AnimateTik {
             }
             progress = tikProgress
         case .end:
+            progress = progressTarget
             endAnimate()
         }
     }

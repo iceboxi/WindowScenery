@@ -11,6 +11,8 @@
 		9090488028AB913800D64A68 /* VerticalBarShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090487F28AB913800D64A68 /* VerticalBarShape.swift */; };
 		9090488428AB926400D64A68 /* WindowSceneryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090488328AB926400D64A68 /* WindowSceneryView.swift */; };
 		9090488C28B489C100D64A68 /* ProgressAnimae.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9090488B28B489C000D64A68 /* ProgressAnimae.swift */; };
+		90DD03AE28C9A1EB00F41864 /* UsageBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90DD03AC28C9A1EB00F41864 /* UsageBarView.swift */; };
+		90DD03AF28C9A1EB00F41864 /* ProgressAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90DD03AD28C9A1EB00F41864 /* ProgressAvatarView.swift */; };
 		90DEA59228AA486C00BED21B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90DEA59128AA486C00BED21B /* AppDelegate.swift */; };
 		90DEA59428AA486C00BED21B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90DEA59328AA486C00BED21B /* SceneDelegate.swift */; };
 		90DEA59628AA486C00BED21B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90DEA59528AA486C00BED21B /* ViewController.swift */; };
@@ -44,6 +46,8 @@
 		9090487F28AB913800D64A68 /* VerticalBarShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalBarShape.swift; sourceTree = "<group>"; };
 		9090488328AB926400D64A68 /* WindowSceneryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowSceneryView.swift; sourceTree = "<group>"; };
 		9090488B28B489C000D64A68 /* ProgressAnimae.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressAnimae.swift; sourceTree = "<group>"; };
+		90DD03AC28C9A1EB00F41864 /* UsageBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsageBarView.swift; sourceTree = "<group>"; };
+		90DD03AD28C9A1EB00F41864 /* ProgressAvatarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressAvatarView.swift; sourceTree = "<group>"; };
 		90DEA58E28AA486C00BED21B /* LayoutMask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LayoutMask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90DEA59128AA486C00BED21B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		90DEA59328AA486C00BED21B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -94,6 +98,15 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		90DD03B028C9A1F700F41864 /* CustomView */ = {
+			isa = PBXGroup;
+			children = (
+				90DD03AD28C9A1EB00F41864 /* ProgressAvatarView.swift */,
+				90DD03AC28C9A1EB00F41864 /* UsageBarView.swift */,
+			);
+			path = CustomView;
+			sourceTree = "<group>";
+		};
 		90DEA58528AA486C00BED21B = {
 			isa = PBXGroup;
 			children = (
@@ -121,6 +134,7 @@
 				90DEA59328AA486C00BED21B /* SceneDelegate.swift */,
 				90DEA59528AA486C00BED21B /* ViewController.swift */,
 				9090488328AB926400D64A68 /* WindowSceneryView.swift */,
+				90DD03B028C9A1F700F41864 /* CustomView */,
 				9090487C28AB90C900D64A68 /* Common */,
 				90DEA59728AA486C00BED21B /* Main.storyboard */,
 				90DEA59A28AA486E00BED21B /* Assets.xcassets */,
@@ -280,7 +294,9 @@
 			files = (
 				90DEA59628AA486C00BED21B /* ViewController.swift in Sources */,
 				9090488C28B489C100D64A68 /* ProgressAnimae.swift in Sources */,
+				90DD03AE28C9A1EB00F41864 /* UsageBarView.swift in Sources */,
 				90DEA59228AA486C00BED21B /* AppDelegate.swift in Sources */,
+				90DD03AF28C9A1EB00F41864 /* ProgressAvatarView.swift in Sources */,
 				9090488028AB913800D64A68 /* VerticalBarShape.swift in Sources */,
 				90DEA59428AA486C00BED21B /* SceneDelegate.swift in Sources */,
 				9090488428AB926400D64A68 /* WindowSceneryView.swift in Sources */,
