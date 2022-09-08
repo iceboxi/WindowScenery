@@ -1,0 +1,2 @@
+# WindowScenery
+Layout mask
