@@ -15,19 +15,8 @@ protocol MaskProgressable: UIView {
     func path(_ bounds: CGRect, lineWidth: CGFloat) -> UIBezierPath
 }
 
-enum AnimateStep {
-    case setup
-    case preStart
-    case wait
-    case start
-    case end
-}
-
 protocol AnimateTik: AnyObject {
     var progressTarget: CGFloat {get set}
-    var duration: Double {get set}
-    var tikProgress : CGFloat {get set}
-    var animateStatus: AnimateStep {get set}
     
-    var endAnimate: (()->Void) { get set }
+    func animate(_ animate: Bool)
 }

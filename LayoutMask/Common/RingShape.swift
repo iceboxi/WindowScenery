@@ -53,10 +53,6 @@ class RingShape: UIView, MaskProgressable {
     
     // MARK: AnimateTik
     var progressTarget: CGFloat = 0.5
-    var duration: Double = 10
-    var tikProgress: CGFloat = 0
-    var endAnimate: (() -> Void) = {}
-    var animateStatus: AnimateStep = .setup
 }
 
 extension RingShape {
@@ -73,32 +69,18 @@ extension RingShape {
 }
 
 extension RingShape: AnimateTik {
-    @objc func onTik() {
-        switch animateStatus {
-        case .setup:
-            tikProgress = 0
-            progress = tikProgress
-            animateStatus = .preStart
-        case .preStart:
-            animateStatus = .wait
-        case .wait:
-            let tik = 1.0 / 60 / 1.3
-            tikProgress += tik
-            if tikProgress > 1 {
-                tikProgress = 0
-                animateStatus = .start
-            }
-        case .start:
-            let tik = 1.0 / 60 / 1
-            tikProgress += tik
-            if tikProgress > progressTarget {
-                tikProgress = progressTarget
-                animateStatus = .end
-            }
-            progress = tikProgress
-        case .end:
-            progress = progressTarget
-            endAnimate()
+    func animate(_ animate: Bool) {
+        guard animate else {
+            return progress = progressTarget
         }
+        
+        let animation = CAKeyframeAnimation(keyPath: "strokeEnd")
+        animation.values = [0, 0, progressTarget]
+        animation.keyTimes = [0, 0.62, 1]
+        animation.duration = 2.1
+        animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        animation.isRemovedOnCompletion = false
+        animation.fillMode = .forwards
+        (layer as! CAShapeLayer).add(animation, forKey: "line")
     }
 }

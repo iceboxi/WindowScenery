@@ -38,7 +38,6 @@ class WindowSceneryView: UIView {
             target?.progressTarget = progress
         }
     }
-    private var displayLink: CADisplayLink?
     
     var showNotch = true
     var lineWidth: CGFloat = 14.0
@@ -93,22 +92,6 @@ extension WindowSceneryView {
             return
         }
         
-        displayLink?.invalidate()
-        
-        target.endAnimate = { [weak self] in
-            self?.stopAnimation()
-        }
-        
-        target.animateStatus = animate ? .setup : .end
-        let displayLink = CADisplayLink(target: target, selector: #selector(onTik))
-        displayLink.add(to: RunLoop.main, forMode: .common)
-        self.displayLink = displayLink
-    }
-    
-    @objc private func onTik() {
-    }
-    
-    private func stopAnimation() {
-        displayLink?.invalidate()
+        target.animate(animate)
     }
 }

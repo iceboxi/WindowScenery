@@ -74,10 +74,6 @@ class VerticalBarShape: UIView, MaskProgressable {
     
     // MARK: AnimateTik
     var progressTarget: CGFloat = 0.2
-    var duration: Double = 10
-    var tikProgress: CGFloat = 0
-    var endAnimate: (() -> Void) = {}
-    var animateStatus: AnimateStep = .setup
     
     // MARK: Private
     private let selectedPointRadius: CGFloat = 2
@@ -107,38 +103,18 @@ extension VerticalBarShape {
 }
 
 extension VerticalBarShape: AnimateTik {
-    @objc func onTik() {
-        switch animateStatus {
-        case .setup:
-            tikProgress = 0
-            progress = tikProgress
-            animateStatus = .preStart
-        case .preStart:
-            let tik = 1.0 / 60 / 0.8
-            tikProgress += tik
-            if tikProgress > 1 {
-                tikProgress = 1
-                animateStatus = .wait
-            }
-            progress = tikProgress
-        case .wait:
-            let tik = 1.0 / 60 / 0.5
-            tikProgress += tik
-            if tikProgress > 2 {
-                tikProgress = 1
-                animateStatus = .start
-            }
-        case .start:
-            let tik = 1.0 / 60 / 0.8
-            tikProgress -= tik
-            if tikProgress < progressTarget {
-                tikProgress = progressTarget
-                animateStatus = .end
-            }
-            progress = tikProgress
-        case .end:
-            progress = progressTarget
-            endAnimate()
+    func animate(_ animate: Bool) {
+        guard animate else {
+            return progress = progressTarget
         }
+        
+        let animation = CAKeyframeAnimation(keyPath: "strokeEnd")
+        animation.values = [0, 1, 1, progressTarget]
+        animation.keyTimes = [0, 0.38, 0.62, 1]
+        animation.duration = 2.1
+        animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        animation.isRemovedOnCompletion = false
+        animation.fillMode = .forwards
+        (layer as! CAShapeLayer).add(animation, forKey: "line")
     }
 }
