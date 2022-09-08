@@ -91,6 +91,7 @@
 		9090487C28AB90C900D64A68 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				9090488328AB926400D64A68 /* WindowSceneryView.swift */,
 				9090488B28B489C000D64A68 /* ProgressAnimae.swift */,
 				9090487D28AB90F100D64A68 /* RingShape.swift */,
 				9090487F28AB913800D64A68 /* VerticalBarShape.swift */,
@@ -133,7 +134,6 @@
 				90DEA59128AA486C00BED21B /* AppDelegate.swift */,
 				90DEA59328AA486C00BED21B /* SceneDelegate.swift */,
 				90DEA59528AA486C00BED21B /* ViewController.swift */,
-				9090488328AB926400D64A68 /* WindowSceneryView.swift */,
 				90DD03B028C9A1F700F41864 /* CustomView */,
 				9090487C28AB90C900D64A68 /* Common */,
 				90DEA59728AA486C00BED21B /* Main.storyboard */,
